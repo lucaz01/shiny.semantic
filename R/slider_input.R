@@ -18,7 +18,7 @@ slider_input <- function(name, min, max, value, step = 0.01, n_ticks = 5, color 
   if (!all(ticks %% 1 == 0)) {
     ticks <- format(ticks, nsmall = 2)
   }
-
+  ticks <- format(ticks, big.mark = ",", decimal.mark = ".")
   shiny::tagList(
     div(style = "margin: 0.5em;",
       shiny_text_input(name, tags$input(type = "text", style = "display:none"), value = value),
@@ -28,12 +28,12 @@ slider_input <- function(name, min, max, value, step = 0.01, n_ticks = 5, color 
         style = "padding-bottom: 0; padding-top: 2em;"),
       div(
         id = paste0(slider_id, "-tick-labels"),
-        style = "padding-top: 1.2em;",
+        style = "padding-top: 2em; margin:0 10px 0 10px;",
         paste(ticks, collapse = " ")
       )
     ),
     tags$style(
-      sprintf("#%s-tick-labels {text-align: justify;}
+      sprintf("#%s-tick-labels {text-align: justify; font-size: 9px;}
               #%s-tick-labels:after {content: ''; display: inline-block; width: 100%%;}",
               slider_id, slider_id)
     ),
@@ -77,9 +77,9 @@ slider_js <- function(slider_id, min, max, init, step, name) {
     });",
     slider_id, min, max, init, step,
     div(
-     class = "ui pointing below label",
-     style = "bottom: 2.7em; right: 0.9em; width: 3.5em; text-align: center;",
-     "'+ value +'"
+     class = "ui floating tiny label",
+     style = "text-align: center; top: -2.5em;",
+     "'+ value.toLocaleString('en-EN') +'"
     ),
     slider_id, name, name)
   )
